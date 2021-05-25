@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM node:lts-alpine3.9 AS build
+FROM --platform=linux/amd64 node:lts-alpine3.9 AS build
 WORKDIR /build
 COPY package.json .
 COPY package-lock.json .
