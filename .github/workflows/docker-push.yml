@@ -1,3 +1,5 @@
+on: [push]
+
 env:
   REGISTRY_NAME: registry.gear.ge.com
   CLUSTER_NAME: uai3042788-devops-nextgen-dev-aks
