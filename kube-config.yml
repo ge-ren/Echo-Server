@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: echoserver
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echoserver
+  namespace: echoserver
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: echoserver
+  template:
+    metadata:
+      labels:
+        app: echoserver
+    spec:
+      containers:
+      - image: registry.gear.ge.com/223022061/echo-server
+        imagePullPolicy: IfNotPresent
+        name: echoserver
+        ports:
+        - containerPort: 80
+        env:
+        - name: PORT
+          value: "80"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: echoserver
+  namespace: echoserver
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+  type: ClusterIP
+  selector:
+    app: echoserver
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: echoserver
+  namespace: echoserver
+  annotations:
+    kubernetes.io/ingress.class: nginx-ingress
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          serviceName: echoserver
+          servicePort: 80
