@@ -1,0 +1,16 @@
+name: Deploy Application to docker
+
+on: push
+
+jobs:
+  deploy-to-docker:
+    runs-on: docker/compose
+    steps:
+    - name: checkout
+      uses: actions/checkout@v2
+      
+    - name: deploy docker
+      run: |
+        docker run -p 8080:80 ealen/echo-server
+        
+  
