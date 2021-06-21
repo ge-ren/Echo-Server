@@ -12,9 +12,14 @@ jobs:
       
     - name: deploy docker
       run: |
+        set +ex
+        echo "running echoserver image on docker"
         docker run -d --name echoserver -p 8080:80 ealen/echo-server
         export container_id=`docker ps -aqf "name=echoserver"`
         docker exec $container_id apk --no-cache add curl
+        echo "running tests"
         docker exec $container_id curl localhost:80/?echo_body=amazing
+        docker exec $container_id curl localhost:80/?echo_env_body=HOSTNAME
+        docker exec $container_id curl -I localhost:80/?echo_code=404-300
         
   
