@@ -14,6 +14,7 @@ jobs:
       run: |
         docker run -d --name echoserver -p 8080:80 ealen/echo-server
         export container_id=`docker ps -aqf "name=echoserver"`
+        docker exec $container_id apk --no-cache add curl
         docker exec $container_id curl localhost:80/?echo_body=amazing
         
   
