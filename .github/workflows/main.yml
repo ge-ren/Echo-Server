@@ -12,7 +12,7 @@ jobs:
       
     - name: deploy docker
       run: |
-        set +ex
+        set -x
         echo "running echoserver image on docker"
         docker run -d --name echoserver -p 8080:80 ealen/echo-server
         export container_id=`docker ps -aqf "name=echoserver"`
